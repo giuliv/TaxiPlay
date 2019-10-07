@@ -7,11 +7,12 @@ import lombok.NoArgsConstructor;
 
 import java.sql.Date;
 
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 public class Reserva {
-    private Integer id_reserva;
+    private IdReserva id_reserva;
     private String direccion_partida;
     private String direccion_destino;
     private Date fecha_inicio_viaje;
@@ -22,7 +23,14 @@ public class Reserva {
     private Double longitud_final;
     private Double distancia;
     private Double total_pagar;
-    private Double metodo_pago;
+    private String metodo_pago;
+
+
+    public Reserva(Integer id_pasajero, Integer id_vehiculo) {
+
+        this.id_reserva = new IdReserva(id_pasajero,id_vehiculo);
+
+    }
 
     public class IdReserva{
         private Integer id_pasajero;
@@ -50,4 +58,14 @@ public class Reserva {
         }
     }
 
+    @Override
+    public String toString() {
+        return
+                "id_reserva=" + id_reserva +
+                ", direccion_partida='" + direccion_partida + '\'' +
+                ", direccion_destino='" + direccion_destino + '\'' +
+                ", distancia=" + distancia +
+                ", total_pagar=" + total_pagar +
+                ", metodo_pago='" + metodo_pago + '\'' ;
+    }
 }

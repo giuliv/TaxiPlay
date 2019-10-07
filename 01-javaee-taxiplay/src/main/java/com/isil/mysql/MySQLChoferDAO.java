@@ -10,7 +10,7 @@ import java.util.List;
 
 public class MySQLChoferDAO implements ChoferDAO {
     final String INSERT = "insert into chofer(nombres, apellidos, dni, telefono, correo) values (?,?,?,?,?)";
-    final String UPDATE = "update chofer set telefono=?, correo=? where id_chofer=?";
+    final String UPDATE = "update chofer set nombres=?, apellidos=?, dni=?, telefono=?, correo=? where id_chofer=?";
     final String DELETE = "delete from chofer where id_chofer=?";
     final String GETALL = "select id_chofer, nombres, apellidos, dni, telefono, correo from chofer";
     final String GETONE = "select id_chofer, nombres, apellidos, dni, telefono, correo from chofer where id_chofer=?";
@@ -26,6 +26,8 @@ public class MySQLChoferDAO implements ChoferDAO {
                 statement.setString(5, a.getCorreo());
                 if (statement.executeUpdate() == 0){
                     System.out.println("No se pudo insertar!!!");
+                }else{
+                    System.out.println("Acabas de insertar un registro!!!");
                 }
                 ResultSet rs = statement.getGeneratedKeys();
                 if (rs.next()){
@@ -38,7 +40,7 @@ public class MySQLChoferDAO implements ChoferDAO {
     }
 
     @Override
-    public void modificar(Chofer a) {
+    public void modificar(Chofer a, Integer id) {
         try (Connection connection = DataBaseUtil.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(UPDATE)) {
                 statement.setString(1, a.getNombres());
@@ -46,9 +48,12 @@ public class MySQLChoferDAO implements ChoferDAO {
                 statement.setString(3, a.getDni());
                 statement.setString(4, a.getTelefono());
                 statement.setString(5, a.getCorreo());
-                statement.setInt(6, a.getId_chofer());
+                statement.setInt(6, id);
                 if (statement.executeUpdate() == 0) {
-                    System.out.println("No se pudo modificar!!!");
+                    System.out.println("No se pudo modificar porque no existe el ID!!!");
+                }else{
+                    System.out.println("Acabas de actualizar los datos de este chofer");
+                    System.out.println(a.toString());
                 }
             }
         } catch (Exception exception) {
@@ -56,14 +61,16 @@ public class MySQLChoferDAO implements ChoferDAO {
         }
     }
 
+
     @Override
-    public void eliminar(Chofer a) {//"delete from chofer where id_chofer=?";
+    public void eliminar(Integer id) {
         try (Connection connection = DataBaseUtil.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(DELETE)) {
-                statement.setInt(1, a.getId_chofer());
-                statement.executeUpdate();
+                statement.setInt(1, id);
                 if (statement.executeUpdate() == 0) {
                     System.out.println("No se pudo eliminar!!!");
+                }else{
+                    System.out.println("Acabas de eliminar un registro!");
                 }
             }
 
@@ -98,6 +105,10 @@ public class MySQLChoferDAO implements ChoferDAO {
                 try (ResultSet resultSet = statement.executeQuery()) {
                     if (resultSet.next()) {
                         chofer = recorreChofer(resultSet);
+                        System.out.println("Estos son los datos del Chofer: ");
+                        System.out.println(chofer.toString());
+                    }else{
+                        System.out.println("El Id que ingresó no se encuentra en el registro");
                     }
                 }
             }
