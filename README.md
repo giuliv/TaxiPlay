@@ -1,6 +1,5 @@
 # TaxiPlay
 
-* **Track:** _Common Core_
 * **Curso:** _Desarrollo de Aplicaciones Empresariales I_
 
 ## Objetivo
@@ -24,7 +23,6 @@
 
 Este reto será evaluado sobre lo siguiente:
 
-* Pixel perfect (replicar el diseño con exactitud)
 * Nombramiento de clases, id, etc
 * Buenas prácticas de codificación
 * Archivo `README.md` actualizado y correctamente redactado
